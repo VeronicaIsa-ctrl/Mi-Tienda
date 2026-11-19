@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Llankay Maky - Tejidos en Lana de Llama</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+  body{background:#FFF8F0;color:#3E2A1E}
+  header{background:#7A3B1E;color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+  header h1{font-size:22px}
+  nav a{color:white;text-decoration:none;margin-left:15px;font-weight:bold}
+  .hero{background:#E8C99A;padding:50px 20px;text-align:center}
+  .hero h2{font-size:32px;margin-bottom:10px}
+  .hero p{margin-bottom:20px}
+  .btn{background:#7A3B1E;color:white;padding:12px 20px;border:none;border-radius:8px;cursor:pointer;text-decoration:none}
+  .productos{padding:30px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;max-width:1000px;margin:auto}
+  .card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.1);text-align:center;padding-bottom:15px}
+  .card img{width:100%;height:180px;object-fit:cover}
+  .card h3{margin:10px 0 5px}
+  .precio{color:#7A3B1E;font-weight:bold;font-size:18px;margin:5px}
+  .card button{background:#C67C3A;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;margin-top:5px}
+  #carrito{background:white;max-width:600px;margin:20px auto;padding:20px;border-radius:12px}
+  #carrito ul{list-style:none;margin:10px 0}
+  #carrito li{padding:8px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between}
+  form{max-width:600px;margin:30px auto;background:white;padding:20px;border-radius:12px}
+  form input, form textarea{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
+  footer{background:#3E2A1E;color:white;text-align:center;padding:20px;margin-top:30px}
+  @media(max-width:600px){header{flex-direction:column} nav{margin-top:10px}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🦙 Llank'ay Maki </h1>
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#tienda">Tienda</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+    <a href="#carrito">🛒 <span id="contador">0</span></a>
+  </nav>
+</header>
+
+<section class="hero" id="inicio">
+  <h2>Tejidos Artesanales en Lana de Llama</h2>
+  <p>Hecho a mano en Lagunillas del Farallón, Rinconada, Jujuy. Cada prenda es única, tejida por artesanas de la Puna.</p>
+  <a href="#tienda" class="btn">Ver Productos</a>
+</section>
+
+<section id="tienda">
+  <h2 style="text-align:center;margin-top:20px">Nuestra Tienda</h2>
+  <div class="productos" id="lista-productos"></div>
+</section>
+
+<section id="carrito">
+  <h2>🛒 Tu Carrito</h2>
+  <ul id="items-carrito"></ul>
+  <p><strong>Total: $<span id="total">0</span></strong></p>
+  <button class="btn" onclick="vaciarCarrito()">Vaciar Carrito</button>
+  <button class="btn" onclick="comprar()">Comprar por WhatsApp</button>
+</section>
+
+<section id="nosotros" style="max-width:700px;margin:30px auto;padding:0 20px;text-align:center">
+  <h2>Sobre Nosotros</h2>
+  <p style="margin-top:10px">Somos un emprendimiento de mujeres tejedoras de Lagunillasdel Farallón. 
+    Fundada en abril  del 2001 en un principio estaba formada por hombres y mujeres. Actualmente somos 13 mujeres trabajamos junto con la organización de Makiwa que tiene la sede en Tilcara.
+     Usamos lana de llama 100% natural, teñida con tintes naturales. 
+     Se trabaja en diferentes tecnicas:2 agujas, 5 agujas, telar de mesa, telar rustico y telar de teclas.
+     Se confeccionan diferentes prendas de vestir entre otras, también se maneja la tecnica de fieltro seco(aujado).</p>
+</section>
+<p style="text-align:center">Escribinos a: verittochaile86@gmail.com </p>
+<form id="contacto" action="https://formsubmit.co/verittochaile86@gmail.com" method="POST">
+  <h2>Contacto</h2>
+  <input type="text" name="nombre" placeholder="Tu nombre" required>
+  <input type="email" name="email" placeholder="Tu email" required>
+  <textarea name="mensaje" placeholder="Mensaje" rows="4"></textarea>
+  <button class="btn" type="submit">Enviar Mensaje</button>
+  <p id="mensaje-enviado" style="color:green;margin-top:10px"></p>
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_subject" value="Nuevo mensaje de tu tienda">
+</form>
+
+<footer>
+  <p>Llank'ay Maki - Lagunillas del Farallón - Rinconada, Jujuy - 2026</p>
+  <p>Hecho con amor y lana de llama 🦙</p>
+</footer>
+
+<script>
+const productos = [
+{ id:1, nombre:"Boina", precio:14000, img:"img/Boina.jpeg" },
+{ id:2, nombre:"Chaleco torera", precio:25000, img:"img/Chaleco torero.jpeg" },
+{ id:3, nombre:"Chulos", precio:14000, img:"img/Chulos.jpeg" },
+{ id:4, nombre:"Gorros", precio:12000, img:"img/gorros.jpeg" },
+{ id:5, nombre:"Mitones", precio:10500, img:"img/Guantes.jpeg" },
+{ id:6, nombre:"Medias", precio:6000, img:"img/Medias.jpeg" },
+{ id:7, nombre:"Polainas", precio:18500, img:"img/Polainas.jpeg" },
+{ id:8, nombre:"Poncho", precio:45000, img:"img/poncho.jpeg" },
+{ id:9, nombre:"Vincha", precio:7000, img:"img/Vincha.jpeg" },
+];
+
+let carrito = [];
+const lista = document.getElementById('lista-productos');
+
+productos.forEach(p => {
+  lista.innerHTML += `
+    <div class="card">
+      <img src="${p.img}" alt="${p.nombre}">
+      <h3>${p.nombre}</h3>
+      <p>Tejido a mano - 100% Lana de Llama</p>
+      <p class="precio">$${p.precio}</p>
+      <button onclick="agregar(${p.id})">Agregar al Carrito</button>
+    </div>`;
+});
+
+function agregar(id){
+  const prod = productos.find(p=>p.id===id);
+  carrito.push(prod);
+  actualizarCarrito();
+  alert(prod.nombre + " agregado 🦙");
+}
+
+function actualizarCarrito(){
+  document.getElementById('contador').textContent = carrito.length;
+  let total = 0;
+  let html = "";
+  carrito.forEach((p,i)=>{
+    total += p.precio;
+    html += `<li>${p.nombre} - $${p.precio}</li>`;
+  });
+  document.getElementById('items-carrito').innerHTML = html || "<li>Carrito vacío</li>";
+  document.getElementById('total').textContent = total;
+}
+
+function vaciarCarrito(){ carrito=[]; actualizarCarrito(); }
+
+function comprar(){
+  if(carrito.length===0){ alert("Tu carrito está vacío"); return; }
+  let mensaje = "Hola! Quiero comprar:%0A";
+  carrito.forEach(p=> mensaje += `- ${p.nombre} $${p.precio}%0A`);
+  window.open("https://wa.me/5493885972189?text=" + mensaje, "_blank");
+}
+actualizarCarrito();
+document.getElementById('contacto').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const datos = new FormData(this);
+  await fetch(this.action, {method: 'POST', body: datos, headers: {'Accept': 'application/json'}});
+  document.getElementById('mensaje-enviado').textContent = "¡Gracias! Tu mensaje fue enviado.";
+  document.getElementById('mensaje-enviado').style.display = 'block';
+  this.reset();
+});
+</script>
+</body>
+</html>
